@@ -1,0 +1,13 @@
+# dependencies and generated output
+node_modules/
+dist/
+coverage/
+.wrangler/
+
+# environment files
+.env*
+!.env.example
+
+# wrangler/local runtime
+.dev.vars*
+!.dev.vars.example

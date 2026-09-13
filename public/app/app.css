@@ -23,7 +23,7 @@ html, body {
   margin: 0;
   height: 100%;
   direction: rtl;
-  font-family: Tahoma, "Segoe UI", sans-serif;
+  font-family: 'Vazirmatn', Tahoma, "Segoe UI", sans-serif;
   background: linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 45%, var(--bg-3) 100%);
   color: var(--text);
 }

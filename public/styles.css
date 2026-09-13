@@ -32,7 +32,7 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
-  font-family: Tahoma, "Segoe UI", sans-serif;
+  font-family: 'Vazirmatn', Tahoma, "Segoe UI", sans-serif;
   direction: rtl;
   background:
     radial-gradient(circle at left top, rgba(24, 74, 200, 0.7), transparent 22%),

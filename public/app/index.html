@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>پانیو | پنل فروشگاه</title>
+    <link rel="stylesheet" href="./app.css" />
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="app-topbar" id="topbar">
+        <button class="icon-btn" id="backBtn" hidden aria-label="بازگشت">‹</button>
+        <h1 id="topbarTitle">پانیو</h1>
+        <span class="topbar-spacer"></span>
+        <button class="icon-btn" id="settingsBtn" hidden aria-label="تنظیمات">⚙</button>
+      </header>
+
+      <main class="app-outlet" id="outlet">
+        <div class="loading">در حال بارگذاری...</div>
+      </main>
+
+      <nav class="bottom-nav" id="bottomNav" hidden>
+        <a href="#/dashboard" class="nav-item" data-route="dashboard">
+          <span class="nav-icon">🏠</span><span>خانه</span>
+        </a>
+        <a href="#/quick-sale" class="nav-item" data-route="quick-sale">
+          <span class="nav-icon">🛒</span><span>فروش</span>
+        </a>
+        <a href="#/products" class="nav-item" data-route="products">
+          <span class="nav-icon">📦</span><span>محصولات</span>
+        </a>
+        <a href="#/finance" class="nav-item" data-route="finance">
+          <span class="nav-icon">💼</span><span>حساب</span>
+        </a>
+      </nav>
+    </div>
+
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>

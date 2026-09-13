@@ -4,8 +4,10 @@
 
 ### Current repository state
 
-- Workspace is empty; no codebase, serverless config, package manifest, or database schema exists to validate against.
-- Because this repository does not yet contain implementation evidence, the architecture below is a forward-looking proposal aligned with the product brief and standard Telegram platform capabilities.
+Implemented and deployed on Cloudflare Workers (see §11 for the actual stack, and
+`DEPLOY.md` for the runbook). The rest of this section is kept as historical context from
+when the repo was still empty — the "assumptions not yet verified" below were resolved by
+the implementation, not by further planning.
 
 ### Verified assumptions from Telegram platform reality
 
@@ -222,9 +224,31 @@ Bot handlers must not own business logic directly. They should dispatch commands
 - Telegram Bot API and Mini App callbacks are traditionally stateless; long-running workflows must be persisted in the database and resumed via events or jobs.
 - If the team later chooses a pure serverless-only model, scheduled subscription expiry enforcement and notification fan-out should be backed by queue or cron jobs rather than in-memory state.
 
-## 11. Recommended initial stack (assumption)
+## 11. Actual stack (implemented)
 
-This is an architecture assumption, not a verified repo fact.
+Superseded the original Postgres/Redis/NestJS assumption below once the deployment
+requirement was fixed to "Cloudflare only, no separate server":
+
+- Backend: Cloudflare Workers (single Worker, no Node process) + Hono for routing
+- Database: Cloudflare D1 (SQLite), hand-written SQL, tenant-scoped repositories in
+  `src/infrastructure/db/repositories/`
+- Ephemeral state: Cloudflare KV (bot conversation state)
+- Bot API: grammY, Telegram webhook with `secret_token` verification
+- Mini App: vanilla HTML/CSS/JS SPA (`public/app/`), Telegram `initData` verified via Web
+  Crypto HMAC (`src/miniapp/verifyInitData.ts`) — no separate auth backend
+- Payments: Zarinpal (toman), behind `src/infrastructure/payment/ZarinpalProvider.ts`
+- Testing: Vitest (Node's Web Crypto matches Workers' exactly, so auth/payment logic is
+  unit-tested without needing Miniflare)
+
+The layering principles below (adapters vs. application vs. domain vs. persistence,
+tenant-scoping, provider abstractions) are unchanged — only the runtime/infra choices were
+Cloudflare-specific rewrites of what was originally a generic assumption.
+
+<details>
+<summary>Original assumption (superseded)</summary>
+
+This was an architecture assumption, not a verified repo fact, written before any code
+existed and before the Cloudflare-only deployment constraint was set.
 
 - Backend: Node.js + TypeScript + NestJS or Fastify
 - Database: PostgreSQL
@@ -233,6 +257,8 @@ This is an architecture assumption, not a verified repo fact.
 - Mini App: React or Next.js frontend, served as a secure web app
 - Validation: zod / class-validator / domain validation
 - Testing: Vitest/Jest + integration tests with Postgres test container
+
+</details>
 
 ## 12. Final architectural stance
 

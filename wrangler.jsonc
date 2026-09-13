@@ -2,10 +2,40 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "telegram-shop-saas",
   "compatibility_date": "2026-09-11",
+  "main": "src/worker/index.ts",
   "observability": {
     "enabled": true
   },
   "assets": {
     "directory": "public"
+  },
+  "vars": {
+    // Public base URL of this Worker once deployed (used to build Mini App / deep links).
+    // Update after your first `wrangler deploy`, e.g. https://telegram-shop-saas.<subdomain>.workers.dev
+    "APP_URL": "http://localhost:8787",
+    // Used to build t.me invite deep links — no leading @.
+    "TELEGRAM_BOT_USERNAME": "your_bot_username",
+    // Zarinpal sandbox until a real merchant id secret is added — see DEPLOY.md.
+    "ZARINPAL_SANDBOX": "true"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "panio-db",
+      // Fill in after: wrangler d1 create panio-db
+      "database_id": "REPLACE_WITH_D1_DATABASE_ID",
+      "migrations_dir": "src/infrastructure/db/migrations"
+    }
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "BOT_SESSIONS",
+      // Fill in after: wrangler kv namespace create BOT_SESSIONS
+      "id": "REPLACE_WITH_KV_NAMESPACE_ID"
+    }
+  ],
+  "triggers": {
+    // Daily at 06:00 UTC — sweeps expired subscriptions and sends renewal reminders.
+    "crons": ["0 6 * * *"]
   }
 }
